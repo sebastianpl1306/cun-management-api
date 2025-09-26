@@ -1,0 +1,29 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: adminCun
+      POSTGRES_PASSWORD: Cun2024!
+      POSTGRES_DB: cundb
+    ports:
+      - "5499:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  api:
+    container_name: nest_api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    env_file:
+      - .env
+
+volumes:
+  pgdata:
