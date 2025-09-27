@@ -2,7 +2,7 @@ import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LeccionesService } from './lecciones.service';
 
-@Controller('lecciones')
+@Controller('api/lecciones')
 export class LeccionesController {
   constructor(private readonly leccionesService: LeccionesService) {}
 
