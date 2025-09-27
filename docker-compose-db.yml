@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  devDb:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: adminCun
+      POSTGRES_PASSWORD: Cun2024!
+      POSTGRES_DB: cundb
+    ports:
+      - "5498:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
