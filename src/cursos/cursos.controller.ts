@@ -2,7 +2,7 @@ import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { CursosService } from './cursos.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
-@Controller('cursos')
+@Controller('api/cursos')
 export class CursosController {
   constructor(private cursosService: CursosService) {}
 
