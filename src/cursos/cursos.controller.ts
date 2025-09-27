@@ -8,7 +8,7 @@ export class CursosController {
 
   @ApiTags('Cursos')
   @ApiOperation({ summary: 'Permite obtener la lista de todos los cursos' })
-  @ApiResponse({ status: 200, description: 'Retornar todas los cursos' })
+  @ApiResponse({ status: 200, description: 'Retornar todos los cursos' })
   @Get()
   async obtenerCursos() {
     return this.cursosService.buscarCursos();
