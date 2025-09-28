@@ -8,6 +8,7 @@ describe('LeccionesController', () => {
   let service: LeccionesService;
 
   const mockLeccionesService = {
+    buscarLeccionPorId: jest.fn(),
     buscarPreguntasPorLeccion: jest.fn(),
   };
 
@@ -26,6 +27,23 @@ describe('LeccionesController', () => {
       id: 3,
       enunciado: '¿Cuál es el resultado de 10 ÷ 2?',
       opciones: ['3', '4', '5', '6'],
+    },
+  ];
+
+  const mockLecciones = [
+    {
+      id: 1,
+      nombre: 'Aritmética Básica',
+      cursoId: 1,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      id: 2,
+      nombre: 'Álgebra',
+      cursoId: 1,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
   ];
 
@@ -125,6 +143,24 @@ describe('LeccionesController', () => {
         expect(pregunta).toHaveProperty('opciones');
         expect(pregunta).not.toHaveProperty('respuestaCorrecta');
       });
+    });
+  });
+
+  describe('obtenerLeccionPorId', () => {
+    it('Debería obtener la leccion con el id valido', async () => {
+      const leccionId = 1;
+      mockLeccionesService.buscarLeccionPorId.mockResolvedValue(
+        mockLecciones[0],
+      );
+
+      const result = await controller.obtenerLeccionPorId(leccionId);
+      expect(result).toEqual(mockLecciones[0]);
+      expect(jest.spyOn(service, 'buscarLeccionPorId')).toHaveBeenCalledTimes(
+        1,
+      );
+      expect(jest.spyOn(service, 'buscarLeccionPorId')).toHaveBeenCalledWith(
+        leccionId,
+      );
     });
   });
 });
