@@ -10,6 +10,18 @@ export class CursosService {
     return await this.prismaService.curso.findMany();
   }
 
+  async buscarCursoPorId(id: number): Promise<Curso> {
+    const curso = await this.prismaService.curso.findUnique({
+      where: { id },
+    });
+
+    if (!curso) {
+      throw new NotFoundException(`Curso con ID ${id} no encontrado`);
+    }
+
+    return curso;
+  }
+
   async buscarLeccionesPorCurso(cursoId: number) {
     const curso = await this.prismaService.curso.findUnique({
       where: { id: cursoId },

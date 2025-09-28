@@ -117,4 +117,31 @@ describe('CursosService', () => {
       expect(prisma.leccion.findMany).toHaveBeenCalledTimes(1);
     });
   });
+
+  describe('buscarCursoPorId', () => {
+    it('Debería traer un curso con id valido', async () => {
+      const cursoId = 1;
+      prisma.curso.findUnique.mockResolvedValue(mockCursos[0]);
+
+      const result = await service.buscarCursoPorId(cursoId);
+      expect(result).toEqual(mockCursos[0]);
+      expect(prisma.curso.findUnique).toHaveBeenCalledTimes(1);
+      expect(prisma.curso.findUnique).toHaveBeenCalledWith({
+        where: { id: cursoId },
+      });
+    });
+
+    it('Debería mandar un error si el curso no existe', async () => {
+      const cursoId = 999;
+      prisma.curso.findUnique.mockResolvedValue(null);
+
+      await expect(service.buscarCursoPorId(cursoId)).rejects.toThrow(
+        new NotFoundException(`Curso con ID ${cursoId} no encontrado`),
+      );
+      expect(prisma.curso.findUnique).toHaveBeenCalledWith({
+        where: { id: cursoId },
+      });
+      expect(prisma.leccion.findMany).not.toHaveBeenCalled();
+    });
+  });
 });
