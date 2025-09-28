@@ -16,6 +16,15 @@ export class CursosController {
 
   @ApiTags('Cursos')
   @ApiOperation({
+    summary: 'Permite obtener un curso por id',
+  })
+  @Get(':cursoId')
+  async obtenerCursoPorId(@Param('cursoId', ParseIntPipe) cursoId: number) {
+    return this.cursosService.buscarCursoPorId(cursoId);
+  }
+
+  @ApiTags('Cursos')
+  @ApiOperation({
     summary: 'Permite obtener la lista de las lecciones por curso',
   })
   @ApiResponse({ status: 200, description: 'Retornar lecciones' })
