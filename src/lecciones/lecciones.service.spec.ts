@@ -138,4 +138,18 @@ describe('LeccionesService', () => {
       expect(result).toEqual([]);
     });
   });
+
+  describe('buscarLeccionPorId', () => {
+    it('Debería devolver una lección con un id valido', async () => {
+      const leccionId = 1;
+      prisma.leccion.findUnique.mockResolvedValue(mockLeccion);
+
+      const result = await service.buscarLeccionPorId(leccionId);
+      expect(result).toEqual(mockLeccion);
+      expect(prisma.leccion.findUnique).toHaveBeenCalledTimes(1);
+      expect(prisma.leccion.findUnique).toHaveBeenCalledWith({
+        where: { id: leccionId },
+      });
+    });
+  });
 });
