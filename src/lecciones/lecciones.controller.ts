@@ -16,4 +16,13 @@ export class LeccionesController {
   ) {
     return this.leccionesService.buscarPreguntasPorLeccion(leccionId);
   }
+
+  @ApiTags('Lecciones')
+  @ApiOperation({ summary: 'Permite obtener las preguntas por lección' })
+  @Get(':leccionId')
+  async obtenerLeccionPorId(
+    @Param('leccionId', ParseIntPipe) leccionId: number,
+  ) {
+    return this.leccionesService.buscarLeccionPorId(leccionId);
+  }
 }

@@ -5,6 +5,18 @@ import { PrismaService } from '../prisma/prisma.service';
 export class LeccionesService {
   constructor(private prisma: PrismaService) {}
 
+  async buscarLeccionPorId(leccionId: number) {
+    const leccion = await this.prisma.leccion.findUnique({
+      where: { id: leccionId },
+    });
+
+    if (!leccion) {
+      throw new NotFoundException(`Lección con ID ${leccionId} no encontrada`);
+    }
+
+    return leccion;
+  }
+
   async buscarPreguntasPorLeccion(leccionId: number) {
     const leccion = await this.prisma.leccion.findUnique({
       where: { id: leccionId },
