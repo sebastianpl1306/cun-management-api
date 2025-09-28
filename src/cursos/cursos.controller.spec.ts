@@ -10,6 +10,7 @@ describe('CursosController', () => {
   const mockCursosService = {
     buscarCursos: jest.fn(),
     buscarLeccionesPorCurso: jest.fn(),
+    buscarCursoPorId: jest.fn(),
   };
 
   const mockCursos = [
@@ -116,19 +117,35 @@ describe('CursosController', () => {
         jest.spyOn(service, 'buscarLeccionesPorCurso'),
       ).toHaveBeenCalledTimes(1);
     });
+
+    it('Debería generar error si el curso no existe', async () => {
+      const cursoId = 99;
+      const error = new NotFoundException(
+        `Curso con ID ${cursoId} no encontrado`,
+      );
+      mockCursosService.buscarLeccionesPorCurso.mockRejectedValue(error);
+
+      await expect(
+        controller.obtenerLeccionesPorCurso(cursoId),
+      ).rejects.toThrow(error);
+
+      expect(
+        jest.spyOn(service, 'buscarLeccionesPorCurso'),
+      ).toHaveBeenCalledWith(cursoId);
+    });
   });
 
-  it('Debería generar error si el curso no existe', async () => {
-    const cursoId = 99;
-    const error = new NotFoundException(
-      `Curso con ID ${cursoId} no encontrado`,
-    );
-    mockCursosService.buscarLeccionesPorCurso.mockRejectedValue(error);
-    await expect(controller.obtenerLeccionesPorCurso(cursoId)).rejects.toThrow(
-      error,
-    );
-    expect(jest.spyOn(service, 'buscarLeccionesPorCurso')).toHaveBeenCalledWith(
-      cursoId,
-    );
+  describe('obtenerCursoPorId', () => {
+    it('Debería obtener el curso con el id valido', async () => {
+      const cursoId = 1;
+      mockCursosService.buscarCursoPorId.mockResolvedValue(mockCursos[0]);
+
+      const result = await controller.obtenerCursoPorId(cursoId);
+      expect(result).toEqual(mockCursos[0]);
+      expect(jest.spyOn(service, 'buscarCursoPorId')).toHaveBeenCalledTimes(1);
+      expect(jest.spyOn(service, 'buscarCursoPorId')).toHaveBeenCalledWith(
+        cursoId,
+      );
+    });
   });
 });
